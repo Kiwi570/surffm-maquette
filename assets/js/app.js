@@ -1,7 +1,7 @@
 // SURF FM + — maquette « Houle hertzienne »
-import { createHoule } from './houle.js?v=3';
-import { createPlayer } from './player.js?v=3';
-import { EMISSIONS, GRILLE, JOURS, AGENDA } from './data.js?v=3';
+import { createHoule } from './houle.js?v=20261027';
+import { createPlayer } from './player.js?v=20261027';
+import { EMISSIONS, GRILLE, JOURS, AGENDA } from './data.js?v=20261027';
 
 const { gsap, ScrollTrigger, SplitText, Lenis } = window;
 gsap.registerPlugin(ScrollTrigger, SplitText);

@@ -1,8 +1,4 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false,
-  "headers": [
-    { "source": "/assets/(css|js|vendor)/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/assets/(img|fonts)/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }] }
-  ]
+  "trailingSlash": false
 }
