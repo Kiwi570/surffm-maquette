@@ -3,16 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mentions légales SURF FM +</title>
+<title>Mentions légales · SURF FM +</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Mentions légales du site de SURF FM +, radio associative.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#061722">
-<meta property="og:title" content="SURF FM + — la radio de la glisse">
-<meta property="og:description" content="Radio associative et bénévole : musique et glisse en FM, en DAB+ et sur le web.">
-<meta property="og:image" content="assets/img/hero-houle-nuit-1600.webp">
+<link rel="canonical" href="https://surffm-maquette.vercel.app/mentions-legales">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="SURF FM +">
+<meta property="og:url" content="https://surffm-maquette.vercel.app/mentions-legales">
+<meta property="og:title" content="Mentions légales · SURF FM +">
+<meta property="og:description" content="Mentions légales du site de SURF FM +, radio associative.">
+<meta property="og:image" content="https://surffm-maquette.vercel.app/assets/img/og-surffm.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SURF FM +, la radio de la glisse">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="assets/fonts/big-shoulders-display.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="assets/fonts/big-shoulders-display.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="assets/img/texture-ecume-1200.webp" fetchpriority="high">
+<link rel="modulepreload" href="assets/js/app.js">
+<link rel="modulepreload" href="assets/js/houle.js">
+<link rel="modulepreload" href="assets/js/player.js">
+<link rel="modulepreload" href="assets/js/data.js">
+<link rel="modulepreload" href="assets/vendor/ogl.mjs">
 <link rel="stylesheet" href="assets/vendor/lenis.css">
 <link rel="stylesheet" href="assets/css/style.css">
 <script>document.documentElement.lang='fr';document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');try{if(localStorage.getItem('surffm-calm')==='1')document.documentElement.classList.add('calm')}catch(e){}</script>
@@ -28,7 +45,7 @@
 
 <header class="site-header" data-header>
   <a class="brand" href="index.html" data-link aria-label="SURF FM +, accueil">
-    <img src="assets/img/logo-surffm.webp" alt="SURF FM +" width="52" height="52">
+    <img src="assets/img/logo-surffm-160.webp" alt="SURF FM +" width="52" height="52">
   </a>
   <nav class="nav" aria-label="Navigation principale">
     <a href="index.html" data-link data-nav="home">Le direct</a>
@@ -36,7 +53,7 @@
     <a href="nous-capter.html" data-link data-nav="capter">Nous capter</a>
   </nav>
   <div class="header-actions">
-    <button class="calm-toggle" type="button" aria-pressed="false" data-calm><span class="calm-dot" aria-hidden="true"></span><span class="calm-label">Mode calme</span></button>
+    <button class="calm-toggle" type="button" aria-pressed="false" aria-label="Mode calme : animations réduites" data-calm><span class="calm-dot" aria-hidden="true"></span><span class="calm-label" aria-hidden="true"><span class="cl-long">Mode calme</span><span class="cl-short">Calme</span></span></button>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn><span class="menu-lines" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
   </div>
 </header>
@@ -47,10 +64,12 @@
     <a href="emissions.html" data-link data-nav="emissions"><span class="mono">02</span>Émissions &amp; grille</a>
     <a href="nous-capter.html" data-link data-nav="capter"><span class="mono">03</span>Nous capter</a>
   </nav>
-  <p class="menu-foot mono">contact@surffm.fr · @radiosurffm</p>
+  <button class="btn-solid menu-play" type="button" data-play aria-label="Écouter le direct"><span class="when-off">▶ Écouter le direct</span><span class="when-on">❚❚ Mettre en pause</span></button>
+  <p class="menu-foot mono">contact@surffm.fr · <a href="https://www.instagram.com/radiosurffm/" target="_blank" rel="noopener">Instagram ↗</a> · <a href="https://www.facebook.com/profile.php?id=61562483515745" target="_blank" rel="noopener">Facebook ↗</a></p>
 </div>
 
 <div class="cadran" data-cadran aria-hidden="true"></div>
+<div class="cadran-h" data-cadran-h aria-hidden="true"><span class="ch-needle" data-ch-needle></span><span class="ch-label mono" data-ch-label></span></div>
 <canvas class="static" data-static aria-hidden="true"></canvas>
 
 <main id="app" data-page="legal" tabindex="-1">
@@ -95,6 +114,7 @@
       <article class="legal-block">
         <h2>Données personnelles</h2>
         <p>Les formulaires de cette maquette (dons, bénévolat, dédicaces) n'envoient aucune donnée. Avant la mise en ligne : préciser le responsable du traitement, la finalité, la durée de conservation et la façon d'exercer vos droits (accès, rectification, suppression).</p>
+        <p>Ce site ne dépose aucun cookie de mesure d'audience ni de publicité. Il mémorise seulement, dans votre navigateur, votre choix du mode calme et, le temps de la visite, le fait que l'ouverture animée a déjà été vue.</p>
       </article>
       <article class="legal-block">
         <h2>Crédits</h2>
@@ -113,15 +133,15 @@
     <div class="footer-cols">
       <div>
         <p class="mono footer-h">Écouter</p>
-        <p>102.3 FM · saison<br>DAB+ · Bayonne local<br>Web · en direct</p>
+        <ul class="footer-list"><li>102.3 FM · saison</li><li>DAB+ · Bayonne local</li><li><button class="footer-play" type="button" data-play aria-label="Écouter le direct"><span class="when-off">Web · écouter le direct</span><span class="when-on">Web · en écoute</span></button></li></ul>
       </div>
       <div>
         <p class="mono footer-h">Pages</p>
-        <p><a href="index.html" data-link>Le direct</a><br><a href="emissions.html" data-link>Émissions &amp; grille</a><br><a href="nous-capter.html" data-link>Nous capter</a><br><a href="mentions-legales.html" data-link>Mentions légales</a></p>
+        <ul class="footer-list"><li><a href="index.html" data-link>Le direct</a></li><li><a href="emissions.html" data-link>Émissions &amp; grille</a></li><li><a href="nous-capter.html" data-link>Nous capter</a></li><li><a href="mentions-legales.html" data-link>Mentions légales</a></li></ul>
       </div>
       <div>
         <p class="mono footer-h">Contact</p>
-        <p>contact@surffm.fr<br><a href="https://www.instagram.com/radiosurffm/" target="_blank" rel="noopener">Instagram ↗</a> · <a href="https://www.facebook.com/profile.php?id=61562483515745" target="_blank" rel="noopener">Facebook ↗</a></p>
+        <ul class="footer-list"><li><span class="sel">contact@surffm.fr</span></li><li><a href="https://www.instagram.com/radiosurffm/" target="_blank" rel="noopener">Instagram ↗</a></li><li><a href="https://www.facebook.com/profile.php?id=61562483515745" target="_blank" rel="noopener">Facebook ↗</a></li></ul>
       </div>
     </div>
     <p class="footer-credits mono">© 2026 SURF FM + · Association · Photos d'archives : Céline Hamelin, Jean Charles Barthelet et l'équipe Surf FM · Images d'ambiance générées · Maquette, contenus à valider</p>
@@ -136,7 +156,7 @@
   </button>
   <div class="player-info">
     <p class="player-live mono"><span class="live-dot"></span>En direct · <span data-player-show>Musique non-stop</span></p>
-    <p class="player-demo mono">Démo · ambiance océan générée, le flux réel se branche ici</p>
+    <p class="player-demo mono"><span class="pd-long">Démo · ambiance océan générée, le flux réel se branche ici</span><span class="pd-short">Démo · son généré</span></p>
   </div>
   <canvas class="player-viz" data-viz aria-hidden="true"></canvas>
   <label class="player-vol"><span class="sr-only">Volume</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><input type="range" min="0" max="1" step="0.01" value="0.7" id="volume" data-volume></label>

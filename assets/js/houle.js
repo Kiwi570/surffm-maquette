@@ -24,31 +24,39 @@ float noise(vec2 p) {
   return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
 }
 
+const float N = ${(lines - 1).toFixed(1)};
 void main() {
   vec2 uv = vUv;
+  // Rien au-dessus de l'horizon : sortie immédiate.
+  if (uv.y > uHorizon + 0.012) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); return; }
   float aspect = uRes.x / uRes.y;
-  vec3 col = vec3(0.0);
+  float x = uv.x * aspect;
   float md = exp(-pow((uv.x - uMouse.x) * 2.6, 2.0) - pow((uv.y - uMouse.y) * 3.2, 2.0)) * uWind;
-  for (int i = 0; i < ${lines}; i++) {
-    float fi = float(i) / float(${lines - 1});
+  float gain = (0.75 + min(uAudio, 0.6) * 1.9) * (1.0 + md * 0.9);
+  // Ligne la plus proche du pixel (inversion de baseY = H - depth * (H + 0.06), depth = fi^1.65).
+  float dp = clamp((uHorizon - uv.y) / (uHorizon + 0.06), 0.0, 1.0);
+  float center = pow(dp, 1.0 / 1.65) * N;
+  float first = floor(center) - 8.0;
+  vec3 col = vec3(0.0);
+  for (int k = 0; k < 16; k++) {
+    float idx = first + float(k);
+    if (idx < 0.0 || idx > N) continue;
+    float fi = idx / N;
     float depth = pow(fi, 1.65);
     float baseY = uHorizon - depth * (uHorizon + 0.06);
-    float x = uv.x * aspect;
+    float amp = mix(0.0016, 0.05, depth) * gain;
+    float thick = mix(0.0008, 0.0032, depth) * (1.0 + min(uAudio, 0.6) * 0.6);
+    // Rejet bon marché avant le calcul du bruit.
+    if (abs(uv.y - baseY) > amp * 1.35 + thick * 2.0) continue;
     float freq = mix(22.0, 4.2, depth);
     float speed = 0.35 + depth * 0.9;
     float n = noise(vec2(x * freq * 0.32 + uTime * 0.18 * (0.5 + depth), fi * 9.0 + uTime * 0.04));
     float swell = sin(x * freq - uTime * speed + fi * 5.0) * 0.55 + (n - 0.5) * 1.5;
-    float amp = mix(0.0016, 0.05, depth) * (0.75 + uAudio * 1.9) * (1.0 + md * 1.4);
     float y = baseY + swell * amp;
-    float thick = mix(0.0008, 0.0032, depth) * (1.0 + uAudio * 0.6);
-    float d = abs(uv.y - y);
-    float line = smoothstep(thick * 1.8, 0.0, d);
+    float line = smoothstep(thick * 1.8, 0.0, abs(uv.y - y));
     float crest = smoothstep(0.25, 0.95, swell);
-    vec3 foam = vec3(0.86, 0.93, 0.95);
-    vec3 sun = vec3(0.85, 0.81, 0.08);
-    vec3 c = mix(foam, sun, clamp(crest * (0.25 + uAudio * 1.2), 0.0, 1.0));
-    float a = line * mix(0.18, 0.78, depth) * (0.55 + crest * 0.7);
-    col += c * a;
+    vec3 c = mix(vec3(0.86, 0.93, 0.95), vec3(0.85, 0.81, 0.08), clamp(crest * (0.25 + min(uAudio, 0.6) * 1.4), 0.0, 1.0));
+    col += c * line * mix(0.18, 0.78, depth) * (0.55 + crest * 0.7);
   }
   gl_FragColor = vec4(col, 1.0);
 }`;
@@ -63,7 +71,7 @@ function webglAvailable() {
 export function createHoule(canvas, { horizon = 0.56, still = false } = {}) {
   const state = { audio: 0, mouse: [0.5, 0.5], wind: 0, running: false, raf: 0, t: Math.random() * 100, last: 0 };
   const small = window.matchMedia('(max-width: 700px)').matches;
-  const dpr = Math.min(window.devicePixelRatio || 1, small ? 1 : 1.5);
+  const dpr = Math.min(window.devicePixelRatio || 1, small ? 1 : 1.25);
   let renderer, program, mesh, ctx2d, mode;
 
   const forceNoGL = /[?&]nowebgl\b/.test(location.search);

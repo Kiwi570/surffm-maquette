@@ -45,6 +45,7 @@ function updateNowPlaying() {
   $$('[data-player-show]').forEach((el) => (el.textContent = cur.nom));
   $$('[data-now-time]').forEach((el) => (el.textContent = `${hh(cur.de)} – ${hh(cur.a)}`));
   $$('[data-next-show]').forEach((el) => (el.textContent = `${next.nom} à ${hh(next.de)}`));
+  try { if ('mediaSession' in navigator && window.MediaMetadata) navigator.mediaSession.metadata = new MediaMetadata({ title: cur.nom, artist: 'SURF FM +', album: 'En direct', artwork: [{ src: new URL('assets/img/logo-surffm.png', document.baseURI).href, sizes: '480x480', type: 'image/png' }] }); } catch (e) {}
 }
 
 /* ---------- Lecteur ---------- */
@@ -55,6 +56,7 @@ function syncPlayState(playing) {
   $$('[data-play]').forEach((b) => { b.setAttribute('aria-pressed', String(playing)); b.setAttribute('aria-label', playing ? 'Mettre le direct en pause' : 'Écouter le direct'); });
 }
 player.onChange(syncPlayState);
+try { if ('mediaSession' in navigator) { navigator.mediaSession.setActionHandler('play', () => player.play()); navigator.mediaSession.setActionHandler('pause', () => player.pause()); } } catch (e) {}
 document.addEventListener('click', (e) => { const b = e.target.closest('[data-play]'); if (b) { e.preventDefault(); player.toggle(); } });
 $('[data-volume]')?.addEventListener('input', (e) => player.setVolume(Number(e.target.value)));
 
@@ -119,6 +121,7 @@ window.addEventListener('scroll', onScrollHeader, { passive: true });
 const menu = $('[data-menu]'), menuBtn = $('[data-menu-btn]');
 function setMenu(open) {
   menuBtn.setAttribute('aria-expanded', String(open));
+  ['#app', '[data-footer]', '[data-player]'].forEach((sel) => { const el = $(sel); if (el) el.inert = open; });
   if (open) {
     menu.hidden = false; lenis?.stop();
     if (!isCalm()) gsap.fromTo($$('nav a', menu), { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.07, duration: 0.8, ease: 'expo.out' });
@@ -216,12 +219,14 @@ function setActiveNav() {
   $$('[data-nav]').forEach((a) => { if (a.dataset.nav === page) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
 }
 let navigating = false, shownUrl = location.href;
+const CLEAN = /(vercel\.app|surffm\.fr)$/.test(location.hostname);
+const pretty = (u) => { if (!CLEAN) return u.href; const p = u.pathname.replace(/index\.html$/, '').replace(/\.html$/, ''); return p + u.search + u.hash; };
 async function navigate(href, push = true) {
   const url = new URL(href, location.href);
   if (norm(url.href) === norm(shownUrl)) {
     if (url.hash) scrollToTarget(url.hash);
     else if (lenis) lenis.scrollTo(0, { duration: 1.2 }); else window.scrollTo(0, 0);
-    if (push) try { history.pushState({}, '', url.href); } catch (e) {}
+    if (push) try { history.pushState({}, '', pretty(url)); } catch (e) {}
     shownUrl = url.href;
     return;
   }
@@ -229,7 +234,7 @@ async function navigate(href, push = true) {
   navigating = true;
   try {
     const fetching = fetch(url.href, { credentials: 'same-origin' }).then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); });
-    if (!isCalm()) await veilCover();
+    if (!isCalm()) { await veilCover(); staticPulse(); }
     const html = await fetching;
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const next = doc.querySelector('#app');
@@ -240,7 +245,7 @@ async function navigate(href, push = true) {
     document.title = doc.title;
     const desc = doc.querySelector('meta[name="description"]')?.content;
     if (desc) $('meta[name="description"]')?.setAttribute('content', desc);
-    if (push) try { history.pushState({}, '', url.href); } catch (e) {}
+    if (push) try { history.pushState({}, '', pretty(url)); } catch (e) {}
     shownUrl = url.href;
     window.scrollTo(0, 0); lenis?.scrollTo(0, { immediate: true });
     setMenu(false);
@@ -294,6 +299,7 @@ function initPage(fromNav) {
     if (page === 'home') { initHoule(main, calm); initShowsScroll(main, calm); initTimeline(main, calm); }
     if (page === 'emissions') { initGrille(main); initLoupe(main); }
     if (page === 'capter') { initMap(main, calm); initCompare(main, calm); }
+    if (page === '404') initLost(main, calm);
   }, main);
   requestAnimationFrame(() => ScrollTrigger.refresh());
 }
@@ -301,7 +307,8 @@ function initPage(fromNav) {
 /* ---------- Contenus générés depuis data.js ---------- */
 function showCard(e, i, tag = 'article') {
   const im = imgSet(e.img);
-  return `<${tag} class="show-card">
+  const link = tag === 'a' ? ` href="emissions.html#emissions-2015" data-link data-cursor-label="Voir" aria-label="${esc(e.nom)}, avec ${esc(e.animateurs)} : voir les émissions"` : '';
+  return `<${tag} class="show-card"${link}>${tag === 'a' ? '<span class="sc-more" aria-hidden="true">→</span>' : ''}
     <figure><img src="${im.src}" ${im.srcset ? `srcset="${im.srcset}" sizes="(max-width: 700px) 80vw, 380px"` : ''} alt="${esc(e.alt)}" width="${im.w}" height="${im.h}" loading="lazy"></figure>
     ${e.real ? `<span class="sc-credit mono">${esc(e.credit)}</span>` : ''}
     <div class="sc-body"><span class="sc-index mono">${String(i + 1).padStart(2, '0')} / ${String(EMISSIONS.length).padStart(2, '0')}</span><h3 class="sc-name">${esc(e.nom)}</h3><p class="sc-hosts">avec ${esc(e.animateurs)}</p></div>
@@ -309,7 +316,7 @@ function showCard(e, i, tag = 'article') {
 }
 function renderDynamic(page) {
   const track = $('[data-hscroll-track]');
-  if (track) track.innerHTML = EMISSIONS.map((e, i) => showCard(e, i)).join('') + `<a class="show-card is-more" href="emissions.html" data-link data-cursor-label="Voir"><span class="mono" style="color:var(--sun)">Grille &amp; émissions</span><h3 class="sc-name">Toute la semaine sur l'antenne →</h3></a>`;
+  if (track) track.innerHTML = EMISSIONS.map((e, i) => showCard(e, i, 'a')).join('') + `<a class="show-card is-more" href="emissions.html" data-link data-cursor-label="Voir"><span class="mono">Grille &amp; émissions</span><h3 class="sc-name">Toute la semaine sur l'antenne →</h3></a>`;
   const grid = $('[data-show-grid]');
   if (grid) grid.innerHTML = EMISSIONS.map((e, i) => showCard(e, i)).join('');
   const ag = $('[data-agenda]');
@@ -329,7 +336,7 @@ function surfTitle(el, delay = 0) {
   const chars = split.chars;
   gsap.from(chars, {
     yPercent: (i) => 115 + 45 * Math.sin(i * 0.9), rotation: (i) => 9 * Math.sin(i * 0.9 + 1), opacity: 0,
-    duration: 1.5, ease: 'expo.out', stagger: 0.055, delay,
+    duration: 1.25, ease: 'expo.out', stagger: 0.05, delay,
   });
   if (finePointer) {
     const onMove = (e) => {
@@ -391,15 +398,16 @@ function initReveals(main, calm) {
   });
   $$('[data-words]', main).forEach((p) => {
     const s = new SplitText(p, { type: 'words', wordsClass: 'word' });
-    gsap.fromTo(s.words, { opacity: 0.16 }, { opacity: 1, ease: 'none', stagger: 0.1, scrollTrigger: { trigger: p, start: 'top 78%', end: 'bottom 45%', scrub: true } });
+    gsap.fromTo(s.words, { opacity: 0.3 }, { opacity: 1, ease: 'none', stagger: 0.1, scrollTrigger: { trigger: p, start: 'top 78%', end: 'bottom 45%', scrub: true } });
     gsap.fromTo(s.words, { color: '#d9cf14' }, { color: '#eaf4f4', ease: 'none', stagger: 0.1, scrollTrigger: { trigger: p, start: 'top 70%', end: 'bottom 35%', scrub: true } });
   });
   $$('[data-count]', main).forEach((el) => {
     const n = Number(el.dataset.count), suffix = el.dataset.suffix || '', o = { v: 0 };
     ScrollTrigger.create({ trigger: el, start: 'top 85%', once: true, onEnter: () => gsap.to(o, { v: n, duration: 2.2, ease: 'power3.out', onUpdate: () => (el.textContent = Math.round(o.v).toLocaleString('fr-FR') + suffix) }) });
   });
-  const cards = $$('.tilt-card, .support-card, .steps li, .faq-item, .legal-block, .counter', main);
+  const cards = $$('.tilt-card, .support-card, .steps li, .faq-item, .legal-block, .counter, .team-list li', main);
   cards.forEach((c) => gsap.from(c, { y: 50, opacity: 0, duration: 1.1, ease: 'expo.out', clearProps: 'transform,opacity', scrollTrigger: { trigger: c, start: 'top 92%', once: true } }));
+  $$('[data-show-grid] .show-card', main).forEach((c, i) => gsap.from(c, { y: 70, opacity: 0, duration: 1.2, ease: 'expo.out', delay: (i % 3) * 0.08, clearProps: 'transform,opacity', scrollTrigger: { trigger: c, start: 'top 94%', once: true } }));
 }
 
 /* ---------- Cadran d'accord ---------- */
@@ -433,13 +441,19 @@ function initCadran(main, calm) {
     markers.forEach((m, i) => { m.b.style.top = Math.min(100, (tops[i] / max) * 100) + '%'; });
   };
   place();
+  const ch = $('[data-cadran-h]'), chNeedle = $('[data-ch-needle]'), chLabel = $('[data-ch-label]');
+  let chProgress = 0;
+  const placeChip = () => { if (!ch || !ch.offsetWidth) return; const W = ch.offsetWidth, lw = chLabel.offsetWidth; chLabel.style.transform = `translateX(${Math.min(W - lw - 8, Math.max(8, chProgress * W - lw / 2)).toFixed(1)}px)`; };
   const setStation = (i) => {
     if (i === current) return;
     const first = current === -1;
     current = i;
-    label.textContent = stations[i]?.dataset.station || '';
+    const name = stations[i]?.dataset.station || '';
+    label.textContent = name;
+    if (chLabel) chLabel.textContent = name;
     if (!first) staticPulse();
     if (!calm && !first) gsap.fromTo(label, { x: 12, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'expo.out' });
+    if (chLabel && ch.offsetWidth && !first) { placeChip(); gsap.killTweensOf(chLabel); gsap.timeline().fromTo(chLabel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: calm ? 0 : 0.35, ease: 'power2.out' }).to(chLabel, { opacity: 0, duration: calm ? 0 : 0.5, delay: 1.4 }); }
   };
   setStation(0);
   ScrollTrigger.create({
@@ -447,6 +461,8 @@ function initCadran(main, calm) {
     onUpdate: (self) => {
       const H = cad.clientHeight;
       needle.style.transform = `translateY(${(self.progress * H).toFixed(1)}px)`;
+      chProgress = self.progress;
+      if (chNeedle && ch.offsetWidth) chNeedle.style.transform = `translateX(${(self.progress * (ch.offsetWidth - 2)).toFixed(1)}px)`;
       const probe = window.scrollY + window.innerHeight * 0.42;
       let idx = 0; tops.forEach((t, i) => { if (t <= probe) idx = i; });
       setStation(idx);
@@ -526,7 +542,7 @@ function initHoule(main, calm) {
   houle = createHoule(canvas, { horizon: window.innerWidth < 700 ? 0.5 : 0.56, still: calm });
   if (calm) { houle.renderOnce(); return; }
   const io = new IntersectionObserver(([en]) => (en.isIntersecting ? houle?.start() : houle?.stop()));
-  io.observe(hero);
+  (loaderPromise || Promise.resolve()).then(() => { if (houle) io.observe(hero); });
   const onMove = (e) => { const r = hero.getBoundingClientRect(); houle?.setPointer((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height, true); };
   const onLeave = () => houle?.setPointer(0.5, 0.5, false);
   hero.addEventListener('pointermove', onMove, sig()); hero.addEventListener('pointerleave', onLeave, sig());
@@ -580,7 +596,9 @@ function initGrille(main) {
     nowEl.innerHTML = isToday ? `<span class="live-dot"></span> Maintenant, ${JOURS[d].toLowerCase()} ${n.label} : <b>${esc(cur.nom)}</b> jusqu'à ${hh(cur.a)}` : `Grille du ${JOURS[d].toLowerCase()}`;
     $$('[data-day]', daysEl).forEach((b) => b.setAttribute('aria-selected', String(Number(b.dataset.day) === d)));
     if (isToday) scroller.scrollLeft = Math.max(0, n.hour * PX - scroller.clientWidth * 0.35);
+    if (!isCalm() && animate) gsap.from($$('.slot', slotsEl), { y: 36, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.05, clearProps: 'transform,opacity' });
   };
+  let animate = false;
   daysEl.addEventListener('click', (e) => { const b = e.target.closest('[data-day]'); if (b) render(Number(b.dataset.day)); }, sig());
   daysEl.addEventListener('keydown', (e) => {
     if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
@@ -588,6 +606,8 @@ function initGrille(main) {
     const j = (i + (e.key === 'ArrowRight' ? 1 : -1) + 7) % 7; btns[j].focus(); render(j);
   }, sig());
   render(now.day);
+  animate = true;
+  if (!isCalm()) ScrollTrigger.create({ trigger: scroller, start: 'top 85%', once: true, onEnter: () => { gsap.from($$('.slot', slotsEl), { y: 50, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.07, clearProps: 'transform,opacity' }); gsap.from(cursorEl, { scaleY: 0, transformOrigin: 'top', duration: 1, ease: 'expo.out', delay: 0.3 }); } });
   // Glisser pour faire défiler la frise
   let down = false, sx = 0, sl = 0;
   scroller.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; down = true; sx = e.clientX; sl = scroller.scrollLeft; scroller.classList.add('is-drag'); }, sig());
@@ -689,14 +709,15 @@ function initCompare(main, calm) {
     c.beginPath(); c.moveTo(0, h / 2); c.lineTo(w, h / 2); c.stroke();
     // grésillement FM
     if (noise > 0.02) {
-      c.fillStyle = `rgba(234,244,244,${0.35 * noise})`;
-      for (let i = 0; i < 260 * noise; i++) c.fillRect(Math.random() * w, Math.random() * h, 1.5, 1.5);
+      c.fillStyle = `rgba(234,244,244,${0.22 * noise})`;
+      const seed = Math.floor(t * 8);
+      for (let i = 0; i < 180 * noise; i++) { const r1 = Math.sin(i * 12.9898 + seed * 78.233) * 43758.5453, r2 = Math.sin(i * 39.346 + seed * 11.135) * 24634.6345; c.fillRect((r1 - Math.floor(r1)) * w, (r2 - Math.floor(r2)) * h, 1.5, 1.5); }
     }
     c.beginPath();
     for (let x = 0; x <= w; x += 2) {
       const p = x / w;
       let y = Math.sin(p * 18 + t * 2.2) * 0.38 + Math.sin(p * 41 - t * 3.1) * 0.18 + Math.sin(p * 7 + t) * 0.22;
-      y += (Math.random() - 0.5) * 1.3 * noise;
+      y += (Math.sin(p * 310 + t * 23) * 0.5 + Math.sin(p * 733 - t * 41) * 0.35) * 0.9 * noise;
       if (v > 0.6) y = Math.round(y * 14) / 14;
       const yy = h / 2 - y * h * 0.36;
       x === 0 ? c.moveTo(x, yy) : c.lineTo(x, yy);
@@ -711,6 +732,19 @@ function initCompare(main, calm) {
   cleanups.push(() => { io.disconnect(); cancelAnimationFrame(raf); });
 }
 
+/* ---------- 404 : hors fréquence ---------- */
+function initLost(main, calm) {
+  const cv = $('[data-lost-static]', main);
+  if (!cv) return;
+  cv.width = 192; cv.height = 108;
+  const c = cv.getContext('2d'), img = c.createImageData(192, 108);
+  const paint = () => { for (let i = 0; i < img.data.length; i += 4) { const v = Math.random() * 255; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; } c.putImageData(img, 0, 0); };
+  paint();
+  if (calm) return;
+  const timer = setInterval(paint, 160);
+  cleanups.push(() => clearInterval(timer));
+}
+
 /* ---------- Ouverture orchestrée (premier chargement) ---------- */
 let loaderPromise = null;
 function runLoader() {
@@ -722,10 +756,11 @@ function runLoader() {
   const canvas = $('[data-loader-line]', el), freq = $('[data-loader-freq]', el), unit = $('[data-loader-unit]', el);
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const o = { amp: 0, f: 87.5, t: 0 };
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  const c = canvas.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0);
   const draw = () => {
-    const w = canvas.clientWidth, h = canvas.clientHeight;
-    canvas.width = w * dpr; canvas.height = h * dpr;
-    const c = canvas.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.clearRect(0, 0, w, h);
     for (let k = 0; k < 3; k++) {
       c.beginPath();
       for (let x = 0; x <= w; x += 3) {
@@ -737,12 +772,13 @@ function runLoader() {
     }
   };
   return new Promise((res) => {
-    const tl = gsap.timeline({ onUpdate: () => { o.t += 0.016; draw(); }, onComplete: () => { el.remove(); res(); } });
-    const d = quick ? 0.55 : 1.45;
+    const tl = gsap.timeline({ onUpdate: () => { o.t += 0.016; draw(); }, onComplete: () => el.remove() });
+    const d = quick ? 0.5 : 1.2;
     tl.to(o, { amp: 1, duration: d * 0.6, ease: 'power2.out' }, 0)
       .to(o, { f: 108, duration: d, ease: 'power2.inOut', onUpdate: () => (freq.textContent = o.f.toFixed(1)) }, 0)
       .add(() => { freq.textContent = 'DAB+'; unit.textContent = 'Surf FM'; }, d)
-      .to(el, { clipPath: 'inset(0 0 100% 0)', duration: 0.8, ease: 'expo.inOut' }, d + (quick ? 0.1 : 0.35));
+      .add(res, d + (quick ? 0.05 : 0.25))
+      .to(el, { clipPath: 'inset(0 0 100% 0)', duration: 0.75, ease: 'expo.inOut' }, d + (quick ? 0.05 : 0.25));
     gsap.set(el, { clipPath: 'inset(0 0 0% 0)' });
   });
 }
