@@ -1,7 +1,7 @@
 // SURF FM + — maquette « Houle hertzienne »
-import { createHoule } from './houle.js';
-import { createPlayer } from './player.js';
-import { EMISSIONS, GRILLE, JOURS, AGENDA } from './data.js';
+import { createHoule } from './houle.js?v=3';
+import { createPlayer } from './player.js?v=3';
+import { EMISSIONS, GRILLE, JOURS, AGENDA } from './data.js?v=3';
 
 const { gsap, ScrollTrigger, SplitText, Lenis } = window;
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -557,10 +557,11 @@ function initShowsScroll(main, calm) {
   mm = gsap.matchMedia();
   mm.add('(min-width: 900px)', () => {
     track.classList.add('is-pinned');
+    section.classList.add('is-pinned-mode');
     const dist = () => Math.max(0, track.scrollWidth - window.innerWidth + 60);
     gsap.to(track, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 } });
     $$('.show-card img', track).forEach((img) => gsap.fromTo(img, { xPercent: -6 }, { xPercent: 6, ease: 'none', scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + dist(), scrub: true } }));
-    return () => track.classList.remove('is-pinned');
+    return () => { track.classList.remove('is-pinned'); section.classList.remove('is-pinned-mode'); };
   });
 }
 

@@ -1,4 +1,4 @@
-# SURF FM + — maquette v2
+# SURF FM + — maquette v3
 
 Direction « Houle hertzienne ». Site statique (HTML, CSS, JavaScript), sans étape de construction, prêt pour Vercel.
 
@@ -26,3 +26,4 @@ La maquette est volontairement exclue des moteurs de recherche, pour ne pas conc
 - Polices WOFF2 hébergées (licence SIL Open Font) dans `assets/fonts`.
 - Mode calme (bouton dans l'en-tête) et respect de « réduire les animations ». Version sans WebGL automatique (test : ajouter `?nowebgl` à l'adresse).
 - Navigation sans rechargement : le son continue quand on change de page.
+- Cache : feuilles et scripts versionnés (`?v=3` dans les pages et les imports de `app.js`). À chaque nouvelle version, augmenter ce numéro partout.
