@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Émissions SURF FM +</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Grille des programmes et émissions de SURF FM +, radio associative de la glisse : ce qui passe maintenant et les voix de l'antenne.">
+<meta name="theme-color" content="#061722">
+<meta property="og:title" content="SURF FM + — la radio de la glisse">
+<meta property="og:description" content="Radio associative et bénévole : musique et glisse en FM, en DAB+ et sur le web.">
+<meta property="og:image" content="assets/img/hero-houle-nuit-1600.webp">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/big-shoulders-display.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/vendor/lenis.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.lang='fr';document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');try{if(localStorage.getItem('surffm-calm')==='1')document.documentElement.classList.add('calm')}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#app">Aller au contenu</a>
+
+<div class="loader" data-loader aria-hidden="true">
+  <canvas class="loader-line" data-loader-line></canvas>
+  <div class="loader-freq mono"><span data-loader-freq>87.5</span><small data-loader-unit>MHz</small></div>
+  <div class="loader-caption mono">Recherche de la station…</div>
+</div>
+
+<header class="site-header" data-header>
+  <a class="brand" href="index.html" data-link aria-label="SURF FM +, accueil">
+    <img src="assets/img/logo-surffm.webp" alt="SURF FM +" width="52" height="52">
+  </a>
+  <nav class="nav" aria-label="Navigation principale">
+    <a href="index.html" data-link data-nav="home">Le direct</a>
+    <a href="emissions.html" data-link data-nav="emissions">Émissions &amp; grille</a>
+    <a href="nous-capter.html" data-link data-nav="capter">Nous capter</a>
+  </nav>
+  <div class="header-actions">
+    <button class="calm-toggle" type="button" aria-pressed="false" data-calm><span class="calm-dot" aria-hidden="true"></span><span class="calm-label">Mode calme</span></button>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn><span class="menu-lines" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menu" data-menu hidden>
+  <nav aria-label="Menu mobile">
+    <a href="index.html" data-link data-nav="home"><span class="mono">01</span>Le direct</a>
+    <a href="emissions.html" data-link data-nav="emissions"><span class="mono">02</span>Émissions &amp; grille</a>
+    <a href="nous-capter.html" data-link data-nav="capter"><span class="mono">03</span>Nous capter</a>
+  </nav>
+  <p class="menu-foot mono">contact@surffm.fr · @radiosurffm</p>
+</div>
+
+<div class="cadran" data-cadran aria-hidden="true"></div>
+<canvas class="static" data-static aria-hidden="true"></canvas>
+
+<main id="app" data-page="emissions" tabindex="-1">
+
+  <section class="page-hero" data-station="Ouverture">
+    <picture class="page-hero-media">
+      <source media="(max-width: 700px)" srcset="assets/img/emissions-hero-mobile-1080.webp">
+      <img src="assets/img/emissions-hero-1600.webp" srcset="assets/img/emissions-hero-800.webp 800w, assets/img/emissions-hero-1600.webp 1600w, assets/img/emissions-hero-2400.webp 2400w" sizes="100vw" alt="Studio de radio la nuit, micro et casque devant une fenêtre ouverte sur l'océan" width="2400" height="1350" fetchpriority="high" data-parallax-bg>
+    </picture>
+    <div class="wrap page-hero-inner">
+      <p class="eyebrow mono" data-hero-fade>Programmes</p>
+      <h1 class="page-title" data-surf-title>Émissions &amp; grille</h1>
+      <p class="hero-lede" data-hero-fade>Ce qui passe maintenant, ce qui arrive ensuite, et les voix qui font Surf FM.</p>
+      <div class="hero-cta" data-hero-fade>
+        <a class="btn-line" href="#grille" data-scroll-to="#grille" data-magnetic>La grille de la semaine <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="grille section" id="grille" data-station="Grille">
+    <div class="wrap">
+      <div class="section-head grille-head">
+        <div>
+          <p class="eyebrow mono">Grille de la semaine</p>
+          <h2 class="h-xl">Sur l'antenne, heure par heure</h2>
+        </div>
+        <p class="grille-demo"><span class="tag-demo">grille d'exemple</span> Créneaux et horaires à remplacer par la vraie grille de Surf FM.</p>
+      </div>
+      <div class="days" role="tablist" aria-label="Jour de la semaine" data-days></div>
+      <div class="grille-now mono" data-grille-now aria-live="polite"></div>
+      <div class="timeline-h" data-grille-scroll>
+        <div class="tlh-inner" data-grille>
+          <div class="tlh-hours" data-grille-hours aria-hidden="true"></div>
+          <div class="tlh-slots" data-grille-slots></div>
+          <div class="tlh-now" data-grille-cursor aria-hidden="true"><span class="mono">maintenant</span></div>
+        </div>
+      </div>
+      <p class="grille-hint mono">Faites glisser la frise · heure de Paris</p>
+    </div>
+  </section>
+
+  <section class="archives section" id="emissions-2015" data-station="Émissions 2015">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow mono">Les émissions</p>
+        <h2 class="h-xl" data-split-reveal>Neuf émissions, une même antenne</h2>
+        <p class="shows-note">D'après le trombinoscope de l'équipe en 2015. <span class="tag-demo">à mettre à jour</span> Descriptions et horaires à compléter avec l'équipe actuelle.</p>
+      </div>
+      <div class="show-grid" data-show-grid></div>
+    </div>
+  </section>
+
+  <section class="equipe section" id="equipe" data-station="L'équipe">
+    <div class="wrap equipe-grid">
+      <div class="equipe-text">
+        <p class="eyebrow mono">L'équipe</p>
+        <h2 class="h-xl" data-split-reveal>Toute l'équipe sur une planche</h2>
+        <p>Animateurs, photographes et graphiste : le trombinoscope de 2015 réunissait toute l'équipe sur une même planche. Passez la souris sur la photo pour lire les noms.</p>
+        <p class="support-meta mono">Photo de l'équipe actuelle à fournir</p>
+      </div>
+      <figure class="loupe" data-loupe>
+        <img src="assets/img/equipe.webp" alt="Trombinoscope de l'équipe Surf FM en 2015 : Arnaud, Clément, Dan, David, Doc Lamixe, Élise, Jay Wigga, Julien, Kaël et Chewie, Kene, Sean, Céline Hamelin, Justine Soubiran et Julien Arcil" width="540" height="378" loading="lazy">
+        <span class="loupe-lens" aria-hidden="true" data-loupe-lens></span>
+        <figcaption class="mono">Trombinoscope · archives 2015</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="rejoindre section" id="rejoindre" data-station="Rejoindre">
+    <div class="wrap rejoindre-grid">
+      <figure class="tide rejoindre-media" data-tide><img src="assets/img/studio-technique.webp" alt="Casque et micro posés sur la table de mixage du studio, en noir et blanc" width="540" height="360" loading="lazy" data-parallax><figcaption class="mono">Photo : Jean Charles Barthelet · archives</figcaption></figure>
+      <div>
+        <p class="eyebrow mono">Proposer une émission</p>
+        <h2 class="h-xl" data-split-reveal>Votre son à l'antenne</h2>
+        <p>Une passion, une sélection musicale, une actu glisse à raconter ? L'équipe accompagne les nouveaux animateurs, de la préparation à la technique.</p>
+        <a class="btn-solid" href="index.html#soutenir" data-link data-magnetic>Devenir bénévole</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+
+<footer class="site-footer" data-footer>
+  <div class="footer-foam" aria-hidden="true"><img src="assets/img/texture-ecume-1200.webp" srcset="assets/img/texture-ecume-1200.webp 1200w, assets/img/texture-ecume-2400.webp 2400w" sizes="100vw" alt="" width="2400" height="1029" loading="lazy"></div>
+  <div class="wrap footer-inner">
+    <p class="footer-word" aria-hidden="true">SURF&nbsp;FM<span>+</span></p>
+    <div class="footer-cols">
+      <div>
+        <p class="mono footer-h">Écouter</p>
+        <p>102.3 FM · saison<br>DAB+ · Bayonne local<br>Web · en direct</p>
+      </div>
+      <div>
+        <p class="mono footer-h">Pages</p>
+        <p><a href="index.html" data-link>Le direct</a><br><a href="emissions.html" data-link>Émissions &amp; grille</a><br><a href="nous-capter.html" data-link>Nous capter</a><br><a href="mentions-legales.html" data-link>Mentions légales</a></p>
+      </div>
+      <div>
+        <p class="mono footer-h">Contact</p>
+        <p>contact@surffm.fr<br><a href="https://www.instagram.com/radiosurffm/" target="_blank" rel="noopener">Instagram ↗</a> · <a href="https://www.facebook.com/profile.php?id=61562483515745" target="_blank" rel="noopener">Facebook ↗</a></p>
+      </div>
+    </div>
+    <p class="footer-credits mono">© 2026 SURF FM + · Association · Photos d'archives : Céline Hamelin, Jean Charles Barthelet et l'équipe Surf FM · Images d'ambiance générées · Maquette, contenus à valider</p>
+  </div>
+</footer>
+
+<aside class="player" data-player aria-label="Lecteur du direct">
+  <button class="player-play" type="button" data-play aria-label="Écouter le direct">
+    <span class="pp-rings" aria-hidden="true"><i></i><i></i></span>
+    <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+    <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+  </button>
+  <div class="player-info">
+    <p class="player-live mono"><span class="live-dot"></span>En direct · <span data-player-show>Musique non-stop</span></p>
+    <p class="player-demo mono">Démo · ambiance océan générée, le flux réel se branche ici</p>
+  </div>
+  <canvas class="player-viz" data-viz aria-hidden="true"></canvas>
+  <label class="player-vol"><span class="sr-only">Volume</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><input type="range" min="0" max="1" step="0.01" value="0.7" id="volume" data-volume></label>
+</aside>
+
+<div class="cursor" data-cursor aria-hidden="true"><span class="cursor-dot"></span><span class="cursor-ring"><span class="cursor-text" data-cursor-text></span></span></div>
+<svg class="wave-veil" data-veil viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path data-veil-path d="M0 100 L100 100 L100 100 L0 100 Z"/><path class="veil-foam" data-veil-foam d="M0 100 L100 100"/></svg>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

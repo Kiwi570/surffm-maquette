@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Capter SURF FM +</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Écouter SURF FM + en 102.3 FM autour de Soorts-Hossegor, en DAB+ sur le Pays basque ou en direct sur le web : couverture et réglages.">
+<meta name="theme-color" content="#061722">
+<meta property="og:title" content="SURF FM + — la radio de la glisse">
+<meta property="og:description" content="Radio associative et bénévole : musique et glisse en FM, en DAB+ et sur le web.">
+<meta property="og:image" content="assets/img/hero-houle-nuit-1600.webp">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/big-shoulders-display.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/vendor/lenis.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.lang='fr';document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');try{if(localStorage.getItem('surffm-calm')==='1')document.documentElement.classList.add('calm')}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#app">Aller au contenu</a>
+
+<div class="loader" data-loader aria-hidden="true">
+  <canvas class="loader-line" data-loader-line></canvas>
+  <div class="loader-freq mono"><span data-loader-freq>87.5</span><small data-loader-unit>MHz</small></div>
+  <div class="loader-caption mono">Recherche de la station…</div>
+</div>
+
+<header class="site-header" data-header>
+  <a class="brand" href="index.html" data-link aria-label="SURF FM +, accueil">
+    <img src="assets/img/logo-surffm.webp" alt="SURF FM +" width="52" height="52">
+  </a>
+  <nav class="nav" aria-label="Navigation principale">
+    <a href="index.html" data-link data-nav="home">Le direct</a>
+    <a href="emissions.html" data-link data-nav="emissions">Émissions &amp; grille</a>
+    <a href="nous-capter.html" data-link data-nav="capter">Nous capter</a>
+  </nav>
+  <div class="header-actions">
+    <button class="calm-toggle" type="button" aria-pressed="false" data-calm><span class="calm-dot" aria-hidden="true"></span><span class="calm-label">Mode calme</span></button>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn><span class="menu-lines" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menu" data-menu hidden>
+  <nav aria-label="Menu mobile">
+    <a href="index.html" data-link data-nav="home"><span class="mono">01</span>Le direct</a>
+    <a href="emissions.html" data-link data-nav="emissions"><span class="mono">02</span>Émissions &amp; grille</a>
+    <a href="nous-capter.html" data-link data-nav="capter"><span class="mono">03</span>Nous capter</a>
+  </nav>
+  <p class="menu-foot mono">contact@surffm.fr · @radiosurffm</p>
+</div>
+
+<div class="cadran" data-cadran aria-hidden="true"></div>
+<canvas class="static" data-static aria-hidden="true"></canvas>
+
+<main id="app" data-page="capter" tabindex="-1">
+
+  <section class="page-hero" data-station="Ouverture">
+    <picture class="page-hero-media">
+      <source media="(max-width: 700px)" srcset="assets/img/capter-hero-mobile-1080.webp">
+      <img src="assets/img/capter-hero-1600.webp" srcset="assets/img/capter-hero-800.webp 800w, assets/img/capter-hero-1600.webp 1600w, assets/img/capter-hero-2400.webp 2400w" sizes="100vw" alt="Mât d'émission radio sur une colline au-dessus de l'Atlantique à l'heure bleue" width="2400" height="1350" fetchpriority="high" data-parallax-bg>
+    </picture>
+    <div class="hero-rings" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="wrap page-hero-inner">
+      <p class="eyebrow mono" data-hero-fade>FM · DAB+ · Web</p>
+      <h1 class="page-title" data-surf-title>Nous capter</h1>
+      <p class="hero-lede" data-hero-fade>En voiture, à la plage ou à l'autre bout du monde : la bonne onde pour écouter Surf FM.</p>
+      <ul class="quick-links" data-hero-fade>
+        <li><a href="#couverture" data-scroll-to="#couverture" data-magnetic><b>102.3</b> FM</a></li>
+        <li><a href="#couverture" data-scroll-to="#couverture" data-magnetic><b>DAB+</b> Bayonne</a></li>
+        <li><a href="#reglages" data-scroll-to="#reglages" data-magnetic><b>Régler</b> son poste</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="couverture section" id="couverture" data-station="Couverture">
+    <div class="wrap couverture-grid">
+      <div class="couverture-text">
+        <p class="eyebrow mono">Couverture</p>
+        <h2 class="h-xl" data-split-reveal>Des Landes au Pays basque</h2>
+        <div class="cov-legend">
+          <button class="cov-key is-on" type="button" data-cov="fm" aria-pressed="true"><span class="key-fm" aria-hidden="true"></span><span><b>102.3 FM</b> Studio et émetteur FM autour de Soorts-Hossegor. Autorisation saisonnière d'avril à octobre (2015). <em class="tag-demo">à confirmer</em></span></button>
+          <button class="cov-key is-on" type="button" data-cov="dab" aria-pressed="true"><span class="key-dab" aria-hidden="true"></span><span><b>DAB+</b> Allotissement local de Bayonne, autorisé par l'Arcom en catégorie A. Les multiplex DAB+ de la côte basque partent de l'émetteur TDF de la Rhune depuis le 30 juin 2023.</span></button>
+        </div>
+        <p class="cov-note">Zones dessinées à titre indicatif. Pour savoir si votre commune reçoit Surf FM en DAB+, consultez la carte officielle de l'Arcom.</p>
+        <a class="btn-line" href="https://www.csa.fr/Ma-radio-DAB-Plus" target="_blank" rel="noopener" data-magnetic>Carte Ma Radio DAB+ de l'Arcom <span aria-hidden="true">↗</span></a>
+      </div>
+      <figure class="cov-map" data-map>
+        <svg viewBox="0 0 600 640" role="img" aria-labelledby="map-title map-desc" data-map-svg>
+          <title id="map-title">Carte indicative de la côte, de Seignosse à Hendaye</title>
+          <desc id="map-desc">La zone FM est centrée sur Soorts-Hossegor. La zone DAB+ part de la Rhune et couvre la côte basque jusqu'au sud des Landes.</desc>
+        </svg>
+        <figcaption class="mono">Carte indicative · ne remplace pas la carte Arcom</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="compare section" id="fm-dab" data-station="FM ou DAB+">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow mono">FM ou DAB+</p>
+        <h2 class="h-xl" data-split-reveal>Même radio, deux signaux</h2>
+        <p class="shows-note">Glissez le curseur : la FM analogique grésille selon la distance et le relief, le DAB+ numérique reste net tant que le signal est reçu.</p>
+      </div>
+      <div class="compare-stage">
+        <canvas class="compare-wave" data-compare-wave aria-hidden="true"></canvas>
+        <div class="compare-labels mono"><span data-cmp-fm>FM · analogique</span><span data-cmp-dab>DAB+ · numérique</span></div>
+        <label class="compare-range"><span class="sr-only">Passer de la FM au DAB+</span><input type="range" min="0" max="100" value="30" id="compare-range" data-compare-range></label>
+      </div>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <caption class="sr-only">Différences entre la FM et le DAB+</caption>
+          <thead><tr><th scope="col"></th><th scope="col">FM</th><th scope="col">DAB+</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Transmission</th><td>Analogique</td><td>Numérique</td></tr>
+            <tr><th scope="row">Fréquences</th><td>87,5 à 108 MHz</td><td>Bande III, 174 à 240 MHz</td></tr>
+            <tr><th scope="row">Qualité du son</th><td>Varie avec la distance, le relief et les interférences</td><td>Constante tant que le signal est reçu</td></tr>
+            <tr><th scope="row">Capacité</th><td>Une radio par fréquence</td><td>Plusieurs radios par multiplex</td></tr>
+            <tr><th scope="row">À l'écran</th><td>Nom de la station et texte (RDS)</td><td>Images, guide des programmes, infos texte</td></tr>
+            <tr><th scope="row">Récepteur</th><td>Tous les postes</td><td>Un poste compatible DAB+</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source mono">D'après l'article « Comprendre la différence entre la radio FM et la radio numérique terrestre » publié sur surffm.fr le 30 juin 2024.</p>
+    </div>
+  </section>
+
+  <section class="reglages section" id="reglages" data-station="Régler son poste">
+    <div class="wrap reglages-grid">
+      <figure class="reglages-media tide" data-tide>
+        <img src="assets/img/autoradio-dab-1600.webp" srcset="assets/img/autoradio-dab-800.webp 800w, assets/img/autoradio-dab-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 50vw" alt="Tableau de bord de voiture la nuit, écran de radio numérique allumé, pluie sur le pare-brise face à la mer" width="2400" height="1350" loading="lazy" data-parallax>
+        <figcaption class="mono">Image d'ambiance</figcaption>
+      </figure>
+      <div>
+        <p class="eyebrow mono">Régler son poste DAB+</p>
+        <h2 class="h-xl" data-split-reveal>Quatre gestes</h2>
+        <ol class="steps" data-steps>
+          <li><span class="step-n mono">1</span><div><h3>Vérifier le logo DAB+</h3><p>Sur le poste ou l'autoradio, cherchez la mention DAB+ ou une touche « DAB ».</p></div></li>
+          <li><span class="step-n mono">2</span><div><h3>Lancer une recherche</h3><p>Choisissez la recherche automatique des stations (scan) en mode DAB+.</p></div></li>
+          <li><span class="step-n mono">3</span><div><h3>Choisir Surf FM</h3><p>Sélectionnez Surf FM dans la liste, puis enregistrez-la en favori.</p></div></li>
+          <li><span class="step-n mono">4</span><div><h3>Pas de signal ?</h3><p>Vérifiez votre commune sur la carte de l'Arcom, rapprochez le poste d'une fenêtre, ou écoutez le direct sur ce site.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq section" id="questions" data-station="Questions">
+    <div class="wrap faq-grid">
+      <div>
+        <p class="eyebrow mono">Questions</p>
+        <h2 class="h-xl" data-split-reveal>Bon à savoir</h2>
+        <figure class="tide faq-media" data-tide><img src="assets/img/antenne-2009.webp" alt="Bénévole en haut du mât de l'antenne Surf FM, 2009–2010" width="540" height="763" loading="lazy"><figcaption class="mono">L'antenne FM, 2009–2010 · archives</figcaption></figure>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Pourquoi Surf FM n'est-elle pas en FM toute l'année ?</summary>
+          <p>En 2015, l'autorisation FM délivrée à Surf FM ne couvrait que la période d'avril à octobre, et les demandes de diffusion à l'année avaient été refusées. Situation actuelle à confirmer.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Faut-il un nouveau poste pour le DAB+ ?</summary>
+          <p>Oui, il faut un récepteur compatible DAB+. Beaucoup de postes récents et d'autoradios reçoivent à la fois la FM et le DAB+.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Le DAB+ remplace-t-il la FM ?</summary>
+          <p>Non, il la complète. La bande FM est saturée : le DAB+ permet de diffuser plus de radios, avec un son constant.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Peut-on écouter Surf FM depuis l'étranger ?</summary>
+          <p>Oui, le direct est disponible sur ce site, avec le lecteur en bas de l'écran.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Comment signaler un problème de réception ?</summary>
+          <p>Écrivez à contact@surffm.fr en indiquant votre commune, votre poste et le mode d'écoute (FM, DAB+ ou web).</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+
+<footer class="site-footer" data-footer>
+  <div class="footer-foam" aria-hidden="true"><img src="assets/img/texture-ecume-1200.webp" srcset="assets/img/texture-ecume-1200.webp 1200w, assets/img/texture-ecume-2400.webp 2400w" sizes="100vw" alt="" width="2400" height="1029" loading="lazy"></div>
+  <div class="wrap footer-inner">
+    <p class="footer-word" aria-hidden="true">SURF&nbsp;FM<span>+</span></p>
+    <div class="footer-cols">
+      <div>
+        <p class="mono footer-h">Écouter</p>
+        <p>102.3 FM · saison<br>DAB+ · Bayonne local<br>Web · en direct</p>
+      </div>
+      <div>
+        <p class="mono footer-h">Pages</p>
+        <p><a href="index.html" data-link>Le direct</a><br><a href="emissions.html" data-link>Émissions &amp; grille</a><br><a href="nous-capter.html" data-link>Nous capter</a><br><a href="mentions-legales.html" data-link>Mentions légales</a></p>
+      </div>
+      <div>
+        <p class="mono footer-h">Contact</p>
+        <p>contact@surffm.fr<br><a href="https://www.instagram.com/radiosurffm/" target="_blank" rel="noopener">Instagram ↗</a> · <a href="https://www.facebook.com/profile.php?id=61562483515745" target="_blank" rel="noopener">Facebook ↗</a></p>
+      </div>
+    </div>
+    <p class="footer-credits mono">© 2026 SURF FM + · Association · Photos d'archives : Céline Hamelin, Jean Charles Barthelet et l'équipe Surf FM · Images d'ambiance générées · Maquette, contenus à valider</p>
+  </div>
+</footer>
+
+<aside class="player" data-player aria-label="Lecteur du direct">
+  <button class="player-play" type="button" data-play aria-label="Écouter le direct">
+    <span class="pp-rings" aria-hidden="true"><i></i><i></i></span>
+    <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+    <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+  </button>
+  <div class="player-info">
+    <p class="player-live mono"><span class="live-dot"></span>En direct · <span data-player-show>Musique non-stop</span></p>
+    <p class="player-demo mono">Démo · ambiance océan générée, le flux réel se branche ici</p>
+  </div>
+  <canvas class="player-viz" data-viz aria-hidden="true"></canvas>
+  <label class="player-vol"><span class="sr-only">Volume</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><input type="range" min="0" max="1" step="0.01" value="0.7" id="volume" data-volume></label>
+</aside>
+
+<div class="cursor" data-cursor aria-hidden="true"><span class="cursor-dot"></span><span class="cursor-ring"><span class="cursor-text" data-cursor-text></span></span></div>
+<svg class="wave-veil" data-veil viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path data-veil-path d="M0 100 L100 100 L100 100 L0 100 Z"/><path class="veil-foam" data-veil-foam d="M0 100 L100 100"/></svg>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

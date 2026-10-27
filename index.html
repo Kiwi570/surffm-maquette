@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SURF FM +</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="SURF FM +, radio associative et bénévole de la glisse : musique et surf en 102.3 FM, en DAB+ sur le Pays basque et en direct sur le web.">
+<meta name="theme-color" content="#061722">
+<meta property="og:title" content="SURF FM + — la radio de la glisse">
+<meta property="og:description" content="Radio associative et bénévole : musique et glisse en FM, en DAB+ et sur le web.">
+<meta property="og:image" content="assets/img/hero-houle-nuit-1600.webp">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/big-shoulders-display.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/vendor/lenis.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.lang='fr';document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');try{if(localStorage.getItem('surffm-calm')==='1')document.documentElement.classList.add('calm')}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#app">Aller au contenu</a>
+
+<div class="loader" data-loader aria-hidden="true">
+  <canvas class="loader-line" data-loader-line></canvas>
+  <div class="loader-freq mono"><span data-loader-freq>87.5</span><small data-loader-unit>MHz</small></div>
+  <div class="loader-caption mono">Recherche de la station…</div>
+</div>
+
+<header class="site-header" data-header>
+  <a class="brand" href="index.html" data-link aria-label="SURF FM +, accueil">
+    <img src="assets/img/logo-surffm.webp" alt="SURF FM +" width="52" height="52">
+  </a>
+  <nav class="nav" aria-label="Navigation principale">
+    <a href="index.html" data-link data-nav="home">Le direct</a>
+    <a href="emissions.html" data-link data-nav="emissions">Émissions &amp; grille</a>
+    <a href="nous-capter.html" data-link data-nav="capter">Nous capter</a>
+  </nav>
+  <div class="header-actions">
+    <button class="calm-toggle" type="button" aria-pressed="false" data-calm><span class="calm-dot" aria-hidden="true"></span><span class="calm-label">Mode calme</span></button>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn><span class="menu-lines" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menu" data-menu hidden>
+  <nav aria-label="Menu mobile">
+    <a href="index.html" data-link data-nav="home"><span class="mono">01</span>Le direct</a>
+    <a href="emissions.html" data-link data-nav="emissions"><span class="mono">02</span>Émissions &amp; grille</a>
+    <a href="nous-capter.html" data-link data-nav="capter"><span class="mono">03</span>Nous capter</a>
+  </nav>
+  <p class="menu-foot mono">contact@surffm.fr · @radiosurffm</p>
+</div>
+
+<div class="cadran" data-cadran aria-hidden="true"></div>
+<canvas class="static" data-static aria-hidden="true"></canvas>
+
+<main id="app" data-page="home" tabindex="-1">
+
+  <!-- OUVERTURE -->
+  <section class="hero" data-station="Ouverture" data-hero>
+    <picture class="hero-media">
+      <source media="(max-width: 700px)" srcset="assets/img/hero-houle-nuit-mobile-1080.webp">
+      <img src="assets/img/hero-houle-nuit-1600.webp" srcset="assets/img/hero-houle-nuit-800.webp 800w, assets/img/hero-houle-nuit-1600.webp 1600w, assets/img/hero-houle-nuit-2400.webp 2400w" sizes="100vw" alt="Houle de nuit sous la lune sur une plage de l'Atlantique" width="2400" height="1350" fetchpriority="high" data-hero-img>
+    </picture>
+    <canvas class="hero-houle" data-houle aria-hidden="true"></canvas>
+    <div class="hero-inner wrap">
+      <p class="eyebrow mono" data-hero-fade>Radio associative · Soorts-Hossegor → Pays basque</p>
+      <h1 class="hero-title" data-surf-title aria-label="SURF FM +"><span class="ht-main">SURF FM</span><span class="ht-plus">+</span></h1>
+      <p class="hero-lede" data-hero-fade>La radio libre et bénévole de la glisse. Musique, surf et culture board, en FM, en DAB+ et sur le web.</p>
+      <div class="hero-cta" data-hero-fade>
+        <button class="btn-buoy" type="button" data-play data-magnetic aria-label="Écouter le direct">
+          <span class="buoy-rings" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="buoy-core" aria-hidden="true"><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></span>
+          <span class="buoy-label"><span class="when-off">Écouter le direct</span><span class="when-on">En écoute</span></span>
+        </button>
+        <a class="btn-line" href="nous-capter.html" data-link data-magnetic>Où nous capter <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <ul class="hero-chips wrap mono" data-hero-fade>
+      <li><b>102.3</b> FM · saison</li>
+      <li><b>DAB+</b> · Bayonne local</li>
+      <li><b>Web</b> · partout</li>
+    </ul>
+    <div class="scroll-hint mono" aria-hidden="true"><span></span>Défiler</div>
+  </section>
+
+  <!-- LE DIRECT -->
+  <section class="direct section" id="direct" data-station="Le direct">
+    <div class="wrap direct-grid">
+      <figure class="direct-media tide" data-tide>
+        <img src="assets/img/studio-console-nuit-1200.webp" srcset="assets/img/studio-console-nuit-600.webp 600w, assets/img/studio-console-nuit-1200.webp 1200w" sizes="(max-width: 900px) 100vw, 45vw" alt="Console de mixage et micro de radio la nuit, face à l'océan" width="1200" height="1500" loading="lazy" data-parallax>
+        <figcaption class="mono">Image d'ambiance</figcaption>
+      </figure>
+      <div class="direct-panel">
+        <p class="eyebrow mono"><span class="live-dot"></span> En ce moment</p>
+        <h2 class="h-xl" data-now-show>Musique non-stop</h2>
+        <p class="direct-slot mono"><span data-now-time>13:00 – 18:00</span> · ensuite <span data-next-show>Émission thématique</span></p>
+        <div class="viz-wrap">
+          <canvas class="viz-big" data-viz-big aria-hidden="true"></canvas>
+        </div>
+        <div class="np">
+          <span class="np-label mono">Titre en cours</span>
+          <span class="np-title">Le titre et l'artiste diffusés s'afficheront ici</span>
+          <span class="np-demo mono">Démo · grille d'exemple et ambiance générée</span>
+        </div>
+        <div class="direct-actions">
+          <button class="btn-solid" type="button" data-play data-magnetic aria-label="Écouter le direct"><span class="when-off">▶ Écouter</span><span class="when-on">❚❚ Pause</span></button>
+          <a class="btn-line" href="emissions.html" data-link data-magnetic>Voir la grille <span aria-hidden="true">→</span></a>
+        </div>
+        <aside class="conditions" aria-label="Conditions du jour, données de démonstration">
+          <p class="mono conditions-title">Conditions du jour <span class="tag-demo">démo</span></p>
+          <dl>
+            <div><dt class="mono">Houle</dt><dd>1,4 m</dd></div>
+            <div><dt class="mono">Période</dt><dd>11 s</dd></div>
+            <div><dt class="mono">Vent</dt><dd>E 12 km/h</dd></div>
+          </dl>
+          <p class="conditions-note">Données fictives, à brancher sur un service de prévisions.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTE -->
+  <section class="manifeste section" id="manifeste" data-station="Manifeste">
+    <figure class="manifeste-bg" aria-hidden="false">
+      <img src="assets/img/biarritz-1600.webp" srcset="assets/img/biarritz-800.webp 800w, assets/img/biarritz-1600.webp 1600w, assets/img/biarritz-2400.webp 2400w" sizes="100vw" alt="La côte de Biarritz vue depuis les dunes, photo du site actuel de Surf FM" width="2400" height="1404" loading="lazy" data-parallax-bg>
+      <figcaption class="mono">Biarritz · photo du site actuel</figcaption>
+    </figure>
+    <div class="wrap manifeste-inner">
+      <p class="eyebrow mono">Manifeste</p>
+      <p class="manifeste-text" data-words>Une radio libre, indépendante et engagée. Des émissions de musique et de glisse, faites par des bénévoles qui assurent tout eux-mêmes, de la technique à l'antenne, jusqu'au café.</p>
+      <div class="manifeste-foot">
+        <figure class="manifeste-micro tide" data-tide>
+          <img src="assets/img/micro.webp" alt="Micro de studio avec la bonnette Surf FM 102.3" width="800" height="536" loading="lazy">
+          <figcaption class="mono">Le micro 102.3 · archives 2015</figcaption>
+        </figure>
+        <ul class="manifeste-facts">
+          <li><span class="mono">Statut</span>Association, radio de catégorie A</li>
+          <li><span class="mono">Équipe</span>100 % bénévole</li>
+          <li><span class="mono">Antenne</span>Musique et sports de glisse</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOUS CAPTER -->
+  <section class="capter section" id="capter" data-station="Nous capter">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow mono">Nous capter</p>
+        <h2 class="h-xl" data-split-reveal>Trois ondes, une seule radio</h2>
+      </div>
+      <div class="capter-cards">
+        <a class="tilt-card" href="nous-capter.html#couverture" data-link data-tilt>
+          <figure class="tc-media"><img src="assets/img/capter-fm-600.webp" srcset="assets/img/capter-fm-600.webp 600w, assets/img/capter-fm-1200.webp 1200w" sizes="(max-width: 900px) 90vw, 30vw" alt="Poste FM ancien posé sur le sable au bord de l'eau" width="1200" height="1500" loading="lazy"></figure>
+          <div class="tc-body">
+            <span class="tc-freq">102.3<small>FM</small></span>
+            <p>Autour de Soorts-Hossegor. Autorisation saisonnière, d'avril à octobre.</p>
+            <span class="tc-note mono">Infos 2015 · à confirmer</span>
+          </div>
+          <span class="tc-glare" aria-hidden="true"></span>
+        </a>
+        <a class="tilt-card" href="nous-capter.html#couverture" data-link data-tilt>
+          <figure class="tc-media"><img src="assets/img/capter-dab-600.webp" srcset="assets/img/capter-dab-600.webp 600w, assets/img/capter-dab-1200.webp 1200w" sizes="(max-width: 900px) 90vw, 30vw" alt="Autoradio numérique dans un van garé face à l'océan" width="1200" height="1500" loading="lazy"></figure>
+          <div class="tc-body">
+            <span class="tc-freq">DAB+<small>numérique</small></span>
+            <p>Autorisée par l'Arcom sur l'allotissement local de Bayonne, multiplex lancé en juin 2023.</p>
+            <span class="tc-note mono">Source · Arcom</span>
+          </div>
+          <span class="tc-glare" aria-hidden="true"></span>
+        </a>
+        <a class="tilt-card" href="#direct" data-tilt data-scroll-to="#direct">
+          <figure class="tc-media"><img src="assets/img/capter-web-600.webp" srcset="assets/img/capter-web-600.webp 600w, assets/img/capter-web-1200.webp 1200w" sizes="(max-width: 900px) 90vw, 30vw" alt="Casque et téléphone sur une serviette de plage au crépuscule" width="1200" height="1500" loading="lazy"></figure>
+          <div class="tc-body">
+            <span class="tc-freq">Web<small>direct</small></span>
+            <p>Le direct sur ce site, depuis n'importe où. La webradio a des auditeurs à l'étranger depuis ses débuts.</p>
+            <span class="tc-note mono">Lecteur en bas de l'écran</span>
+          </div>
+          <span class="tc-glare" aria-hidden="true"></span>
+        </a>
+      </div>
+      <a class="btn-line center-link" href="nous-capter.html" data-link data-magnetic>Couverture, FM ou DAB+, réglages <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <!-- ÉMISSIONS -->
+  <section class="shows section" id="emissions" data-station="Émissions" data-hscroll>
+    <div class="shows-pin">
+      <div class="wrap shows-head">
+        <p class="eyebrow mono">Émissions</p>
+        <h2 class="h-xl">Au micro, des passionnés</h2>
+        <p class="shows-note">Les émissions de la grille 2015, d'après le trombinoscope de l'équipe. <span class="tag-demo">à mettre à jour</span></p>
+      </div>
+      <div class="shows-track" data-hscroll-track></div>
+    </div>
+  </section>
+
+  <!-- HISTOIRE -->
+  <section class="histoire section" id="histoire" data-station="Histoire">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow mono">Histoire</p>
+        <h2 class="h-xl" data-split-reveal>Plus de quinze saisons sur les ondes</h2>
+      </div>
+      <div class="counters">
+        <div class="counter"><span class="counter-n" data-count="136">136</span><span class="counter-l">contributeurs à la campagne de 2015</span></div>
+        <div class="counter"><span class="counter-n" data-count="8257" data-suffix=" €">8 257 €</span><span class="counter-l">collectés pour déménager l'antenne</span></div>
+        <div class="counter"><span class="counter-n" data-count="13">13</span><span class="counter-l">radios sur le multiplex DAB+ de Bayonne</span></div>
+      </div>
+      <ol class="timeline" data-timeline>
+        <svg class="timeline-line" aria-hidden="true" preserveAspectRatio="none"><path d="" data-timeline-path /></svg>
+        <li class="tl-item">
+          <span class="tl-year">≈ 2008</span>
+          <div class="tl-body"><h3>Premières émissions en FM et sur le web</h3><p>En 2015, la radio comptait déjà sept ans d'antenne. Date exacte à confirmer.</p></div>
+          <figure class="tl-media tl-tall tide" data-tide><img src="assets/img/antenne-2009.webp" alt="Bénévole en haut du mât de l'antenne Surf FM, 2009–2010" width="540" height="763" loading="lazy"><figcaption class="mono">L'antenne, 2009–2010 · archives</figcaption></figure>
+        </li>
+        <li class="tl-item">
+          <span class="tl-year">2012</span>
+          <div class="tl-body"><h3>Surf FM Magazine</h3><p>La radio édite son propre magazine papier, distribué avec ses autocollants 102.3.</p></div>
+          <figure class="tl-media tide" data-tide><img src="assets/img/magazine-2012.webp" alt="Couverture du Surf FM Magazine, 2012" width="416" height="561" loading="lazy"><figcaption class="mono">Surf FM Magazine, 2012 · archives</figcaption></figure>
+        </li>
+        <li class="tl-item">
+          <span class="tl-year">2015</span>
+          <div class="tl-body"><h3>136 auditeurs financent l'antenne</h3><p>Une campagne de financement participatif réunit 8 257 €, soit 103 % de l'objectif, pour déménager l'antenne et améliorer la diffusion en FM, sur le web et sur mobile.</p></div>
+          <figure class="tl-media tide" data-tide><img src="assets/img/autocollants.webp" alt="Magazines et autocollants Surf FM 102.3 offerts aux contributeurs" width="800" height="600" loading="lazy"><figcaption class="mono">Magazines et autocollants · archives 2015</figcaption></figure>
+        </li>
+        <li class="tl-item">
+          <span class="tl-year">2023</span>
+          <div class="tl-body"><h3>Surf FM passe au DAB+</h3><p>L'Arcom autorise Surf FM en radio numérique sur l'allotissement local de Bayonne, en catégorie A. Le multiplex démarre en juin 2023.</p></div>
+          <figure class="tl-media tl-logo tide" data-tide><img src="assets/img/logo-surffm.webp" alt="Logo SURF FM +" width="480" height="480" loading="lazy"><figcaption class="mono">Le logo SURF FM +</figcaption></figure>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SOUTENIR -->
+  <section class="soutenir section" id="soutenir" data-station="Soutenir">
+    <figure class="soutenir-bg" aria-hidden="true">
+      <img src="assets/img/lineup-aube-1600.webp" srcset="assets/img/lineup-aube-800.webp 800w, assets/img/lineup-aube-1600.webp 1600w, assets/img/lineup-aube-2400.webp 2400w" sizes="100vw" alt="" width="2400" height="1350" loading="lazy" data-parallax-bg>
+    </figure>
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow mono">Soutenir</p>
+        <h2 class="h-xl" data-split-reveal>Une radio qui tient grâce à ses auditeurs</h2>
+      </div>
+      <div class="soutenir-grid">
+        <article class="support-card support-don">
+          <h3>Faire un don</h3>
+          <p>Matériel, antenne, studio : chaque don va directement à l'association.</p>
+          <form class="don-form" data-form="don" novalidate>
+            <fieldset>
+              <legend class="mono">Montant</legend>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="montant" value="10" id="don-10"><span>10 €</span></label>
+                <label class="chip"><input type="radio" name="montant" value="20" id="don-20" checked><span>20 €</span></label>
+                <label class="chip"><input type="radio" name="montant" value="50" id="don-50"><span>50 €</span></label>
+                <label class="chip chip-free"><input type="radio" name="montant" value="libre" id="don-libre"><span>Libre</span></label>
+              </div>
+              <label class="field field-libre" hidden data-libre><span class="mono">Montant libre (€)</span><input type="number" min="1" step="1" inputmode="numeric" id="don-montant-libre" name="libre" placeholder="35"></label>
+            </fieldset>
+            <div class="gauge" aria-hidden="true"><span data-gauge></span></div>
+            <button class="btn-solid" type="submit" data-magnetic>Donner <span data-don-amount>20 €</span></button>
+            <p class="form-msg" data-form-msg role="status"></p>
+          </form>
+          <p class="form-demo mono">Démo · aucun paiement. Lien vers la plateforme de dons à compléter.</p>
+        </article>
+        <article class="support-card">
+          <h3>Adhérer</h3>
+          <p>Devenez membre de l'association et recevez votre carte d'adhérent.</p>
+          <p class="support-meta mono">Montant de la cotisation à compléter</p>
+          <figure class="support-img"><img src="assets/img/emission-studio.webp" alt="Bénévoles autour des micros pendant une émission au studio" width="638" height="309" loading="lazy"><figcaption class="mono">Au studio · archives 2015</figcaption></figure>
+        </article>
+        <article class="support-card">
+          <h3>Devenir bénévole</h3>
+          <p>Technique, programmation musicale, animation, interviews, réseaux sociaux, comptabilité, partenariats : il y a de la place pour chacun.</p>
+          <form class="mini-form" data-form="benevole" novalidate>
+            <label class="field"><span class="mono">E-mail</span><input type="email" name="email" id="benevole-email" autocomplete="email" required placeholder="vous@exemple.fr"></label>
+            <label class="field"><span class="mono">Je veux aider pour</span>
+              <select name="role" id="benevole-role"><option>La technique</option><option>La programmation musicale</option><option>L'animation d'une émission</option><option>Les réseaux sociaux</option><option>La comptabilité</option><option>Les partenariats</option></select>
+            </label>
+            <button class="btn-line" type="submit">Proposer mon aide <span aria-hidden="true">→</span></button>
+            <p class="form-msg" data-form-msg role="status"></p>
+          </form>
+        </article>
+        <article class="support-card">
+          <h3>Annonceurs</h3>
+          <p>Radio associative de catégorie A : publicité et parrainage restent sous 20 % des recettes. Des messages rares, donc bien entendus.</p>
+          <p class="support-meta mono">Kit annonceur et tarifs à compléter</p>
+          <a class="btn-line" href="#contact" data-scroll-to="#contact">Nous écrire <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENDA -->
+  <section class="agenda section" id="agenda" data-station="Agenda">
+    <div class="wrap agenda-grid">
+      <figure class="agenda-media tide" data-tide>
+        <img src="assets/img/agenda-plage-soir-1600.webp" srcset="assets/img/agenda-plage-soir-800.webp 800w, assets/img/agenda-plage-soir-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 55vw" alt="Plage au crépuscule avec enceintes et table de mixage prêtes pour une soirée" width="2400" height="1350" loading="lazy" data-parallax>
+        <figcaption class="mono">Image d'ambiance</figcaption>
+      </figure>
+      <div class="agenda-panel">
+        <p class="eyebrow mono">Agenda</p>
+        <h2 class="h-xl">Prochains rendez-vous</h2>
+        <div class="agenda-list" data-agenda></div>
+        <p class="agenda-note">Les animateurs mixent aussi en soirée : des DJ sets étaient proposés en 2015 pour les événements à moins de 50 km. <span class="tag-demo">à confirmer</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact section" id="contact" data-station="Contact">
+    <div class="wrap contact-grid">
+      <div class="contact-intro">
+        <p class="eyebrow mono">Contact &amp; dédicaces</p>
+        <h2 class="h-xl" data-split-reveal>Un mot pour l'antenne ?</h2>
+        <p>Une dédicace, une info glisse, une idée d'émission : écrivez au studio.</p>
+        <div class="contact-mail">
+          <span class="mono">E-mail</span>
+          <span class="mail-text" data-copy-text>contact@surffm.fr</span>
+          <button class="btn-copy mono" type="button" data-copy>Copier</button>
+        </div>
+        <ul class="socials">
+          <li><a href="https://www.instagram.com/radiosurffm/" target="_blank" rel="noopener">Instagram · @radiosurffm <span aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.facebook.com/profile.php?id=61562483515745" target="_blank" rel="noopener">Facebook · SURF FM + <span aria-hidden="true">↗</span></a></li>
+        </ul>
+        <figure class="contact-photo tide" data-tide><img src="assets/img/emission-participer.webp" alt="Animateurs de Surf FM au micro pendant une émission, en noir et blanc" width="800" height="534" loading="lazy"><figcaption class="mono">Photo : Céline Hamelin · archives 2015</figcaption></figure>
+      </div>
+      <form class="dedicace" data-form="dedicace" novalidate>
+        <h3>Envoyer une dédicace</h3>
+        <label class="field"><span class="mono">Prénom</span><input type="text" name="prenom" id="ded-prenom" autocomplete="given-name" required placeholder="Lucie"></label>
+        <label class="field"><span class="mono">Ville</span><input type="text" name="ville" id="ded-ville" autocomplete="address-level2" placeholder="Capbreton"></label>
+        <label class="field"><span class="mono">Titre souhaité</span><input type="text" name="titre" id="ded-titre" placeholder="Titre et artiste"></label>
+        <label class="field"><span class="mono">Message</span><textarea name="message" id="ded-message" rows="4" required placeholder="Pour toute l'équipe du matin…"></textarea></label>
+        <button class="btn-solid" type="submit" data-magnetic>Envoyer au studio</button>
+        <p class="form-msg" data-form-msg role="status"></p>
+        <p class="form-demo mono">Démo · le message n'est envoyé nulle part.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer" data-footer>
+  <div class="footer-foam" aria-hidden="true"><img src="assets/img/texture-ecume-1200.webp" srcset="assets/img/texture-ecume-1200.webp 1200w, assets/img/texture-ecume-2400.webp 2400w" sizes="100vw" alt="" width="2400" height="1029" loading="lazy"></div>
+  <div class="wrap footer-inner">
+    <p class="footer-word" aria-hidden="true">SURF&nbsp;FM<span>+</span></p>
+    <div class="footer-cols">
+      <div>
+        <p class="mono footer-h">Écouter</p>
+        <p>102.3 FM · saison<br>DAB+ · Bayonne local<br>Web · en direct</p>
+      </div>
+      <div>
+        <p class="mono footer-h">Pages</p>
+        <p><a href="index.html" data-link>Le direct</a><br><a href="emissions.html" data-link>Émissions &amp; grille</a><br><a href="nous-capter.html" data-link>Nous capter</a><br><a href="mentions-legales.html" data-link>Mentions légales</a></p>
+      </div>
+      <div>
+        <p class="mono footer-h">Contact</p>
+        <p>contact@surffm.fr<br><a href="https://www.instagram.com/radiosurffm/" target="_blank" rel="noopener">Instagram ↗</a> · <a href="https://www.facebook.com/profile.php?id=61562483515745" target="_blank" rel="noopener">Facebook ↗</a></p>
+      </div>
+    </div>
+    <p class="footer-credits mono">© 2026 SURF FM + · Association · Photos d'archives : Céline Hamelin, Jean Charles Barthelet et l'équipe Surf FM · Images d'ambiance générées · Maquette, contenus à valider</p>
+  </div>
+</footer>
+
+<aside class="player" data-player aria-label="Lecteur du direct">
+  <button class="player-play" type="button" data-play aria-label="Écouter le direct">
+    <span class="pp-rings" aria-hidden="true"><i></i><i></i></span>
+    <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+    <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+  </button>
+  <div class="player-info">
+    <p class="player-live mono"><span class="live-dot"></span>En direct · <span data-player-show>Musique non-stop</span></p>
+    <p class="player-demo mono">Démo · ambiance océan générée, le flux réel se branche ici</p>
+  </div>
+  <canvas class="player-viz" data-viz aria-hidden="true"></canvas>
+  <label class="player-vol"><span class="sr-only">Volume</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><input type="range" min="0" max="1" step="0.01" value="0.7" id="volume" data-volume></label>
+</aside>
+
+<div class="cursor" data-cursor aria-hidden="true"><span class="cursor-dot"></span><span class="cursor-ring"><span class="cursor-text" data-cursor-text></span></span></div>
+<svg class="wave-veil" data-veil viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path data-veil-path d="M0 100 L100 100 L100 100 L0 100 Z"/><path class="veil-foam" data-veil-foam d="M0 100 L100 100"/></svg>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
