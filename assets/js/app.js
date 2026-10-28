@@ -1,7 +1,7 @@
 // SURF FM + — maquette « Houle hertzienne »
-import { createHoule } from './houle.js?v=20261028';
-import { createPlayer } from './player.js?v=20261028';
-import { EMISSIONS, GRILLE, JOURS, AGENDA } from './data.js?v=20261028';
+import { createHoule } from './houle.js?v=20261028-2';
+import { createPlayer } from './player.js?v=20261028-2';
+import { EMISSIONS, GRILLE, JOURS, AGENDA } from './data.js?v=20261028-2';
 
 const { gsap, ScrollTrigger, SplitText, Lenis } = window;
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -127,9 +127,40 @@ function setMenu(open) {
     if (!isCalm()) gsap.fromTo($$('nav a', menu), { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.07, duration: 0.8, ease: 'expo.out' });
     $('nav a', menu)?.focus();
   } else { menu.hidden = true; lenis?.start(); }
+  syncBars();
 }
 menuBtn?.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') { setMenu(false); menuBtn.focus(); } });
+
+/* ---------- Hauteurs réelles : en-tête et barres du bas ---------- */
+const playerEl = $('[data-player]'), cadranH = $('[data-cadran-h]');
+function measureBars() {
+  root.style.setProperty('--entete-h', Math.ceil(header.offsetTop + header.offsetHeight) + 'px');
+  const ch = cadranH && getComputedStyle(cadranH).display !== 'none' ? cadranH.offsetHeight : 0;
+  if (playerEl) root.style.setProperty('--barres-h', Math.ceil(playerEl.offsetHeight + ch) + 'px');
+}
+measureBars();
+new ResizeObserver(measureBars).observe(header);
+if (playerEl) new ResizeObserver(measureBars).observe(playerEl);
+window.addEventListener('resize', measureBars, { passive: true });
+
+// Sur téléphone, le lecteur s'efface quand le formulaire ou le pied de page est à l'écran (le pied a son bouton d'écoute)
+const mqPhone = window.matchMedia('(max-width: 719px)');
+const barsHiders = new Set();
+const barsIO = new IntersectionObserver((entries) => {
+  entries.forEach((en) => (en.isIntersecting ? barsHiders.add(en.target) : barsHiders.delete(en.target)));
+  syncBars();
+}, { rootMargin: '0px 0px -40px 0px' });
+function syncBars() {
+  const menuOpen = menuBtn?.getAttribute('aria-expanded') === 'true';
+  root.classList.toggle('bars-off', mqPhone.matches && (menuOpen || barsHiders.size > 0));
+}
+function watchBars(main) {
+  barsIO.disconnect(); barsHiders.clear();
+  [...$$('form', main), $('[data-footer]')].forEach((el) => el && barsIO.observe(el));
+  syncBars();
+}
+mqPhone.addEventListener?.('change', syncBars);
 
 /* ---------- Mode calme ---------- */
 const calmBtn = $('[data-calm]');
@@ -296,6 +327,7 @@ function initPage(fromNav) {
     initTilt(main, calm);
     initForms(main);
     initCopy(main);
+    watchBars(main);
     if (page === 'home') { initHoule(main, calm); initShowsScroll(main, calm); initTimeline(main, calm); }
     if (page === 'emissions') { initGrille(main); initLoupe(main); }
     if (page === 'capter') { initMap(main, calm); initCompare(main, calm); }
@@ -394,7 +426,7 @@ function initReveals(main, calm) {
   });
   $$('[data-split-reveal]', main).forEach((h) => {
     const s = new SplitText(h, { type: 'lines', mask: 'lines', linesClass: 'line' });
-    gsap.from(s.lines, { yPercent: 105, duration: 1.2, ease: 'expo.out', stagger: 0.1, scrollTrigger: { trigger: h, start: 'top 85%', once: true } });
+    gsap.from(s.lines, { yPercent: 105, duration: 1.2, ease: 'expo.out', stagger: 0.1, onComplete: () => s.revert(), scrollTrigger: { trigger: h, start: 'top 85%', once: true } });
   });
   $$('[data-words]', main).forEach((p) => {
     const s = new SplitText(p, { type: 'words', wordsClass: 'word' });
@@ -441,6 +473,10 @@ function initCadran(main, calm) {
     markers.forEach((m, i) => { m.b.style.top = Math.min(100, (tops[i] / max) * 100) + '%'; });
   };
   place();
+  let placeRaf = 0;
+  const ro = new ResizeObserver(() => { cancelAnimationFrame(placeRaf); placeRaf = requestAnimationFrame(place); });
+  ro.observe(main);
+  cleanups.push(() => ro.disconnect());
   const ch = $('[data-cadran-h]'), chNeedle = $('[data-ch-needle]'), chLabel = $('[data-ch-label]');
   let chProgress = 0;
   const placeChip = () => { if (!ch || !ch.offsetWidth) return; const W = ch.offsetWidth, lw = chLabel.offsetWidth; chLabel.style.transform = `translateX(${Math.min(W - lw - 8, Math.max(8, chProgress * W - lw / 2)).toFixed(1)}px)`; };
@@ -463,7 +499,7 @@ function initCadran(main, calm) {
       needle.style.transform = `translateY(${(self.progress * H).toFixed(1)}px)`;
       chProgress = self.progress;
       if (chNeedle && ch.offsetWidth) chNeedle.style.transform = `translateX(${(self.progress * (ch.offsetWidth - 2)).toFixed(1)}px)`;
-      const probe = window.scrollY + window.innerHeight * 0.42;
+      const probe = window.scrollY + window.innerHeight * 0.5;
       let idx = 0; tops.forEach((t, i) => { if (t <= probe) idx = i; });
       setStation(idx);
     },
@@ -527,7 +563,7 @@ function initForms(main) {
 function initCopy(main) {
   $$('[data-copy]', main).forEach((btn) => {
     btn.addEventListener('click', () => {
-      const txt = $('[data-copy-text]', btn.parentElement);
+      const txt = $('[data-copy-text]', btn.closest('.contact-mail') || btn.parentElement.parentElement);
       const done = () => { btn.textContent = 'Copié'; setTimeout(() => (btn.textContent = 'Copier'), 1800); };
       const fallback = () => { const r = document.createRange(); r.selectNodeContents(txt); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Sélectionné'; setTimeout(() => (btn.textContent = 'Copier'), 1800); };
       try { navigator.clipboard.writeText(txt.textContent.trim()).then(done, fallback); } catch (e) { fallback(); }
@@ -559,7 +595,7 @@ function initShowsScroll(main, calm) {
     track.classList.add('is-pinned');
     section.classList.add('is-pinned-mode');
     const dist = () => Math.max(0, track.scrollWidth - window.innerWidth + 60);
-    gsap.to(track, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 } });
+    gsap.to(track, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true } });
     $$('.show-card img', track).forEach((img) => gsap.fromTo(img, { xPercent: -6 }, { xPercent: 6, ease: 'none', scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + dist(), scrub: true } }));
     return () => { track.classList.remove('is-pinned'); section.classList.remove('is-pinned-mode'); };
   });
